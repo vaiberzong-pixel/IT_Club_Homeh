@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IT-Кружок — Заявка участника</title>
+<style>
+:root{--bg:#0b1010;--panel:#121a18;--text:#f3f5ee;--muted:#a8b4aa;--lime:#c7f36b;--line:#2a3731;--accent:#19352b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif}
+header{display:flex;justify-content:space-between;align-items:center;padding:24px max(5vw,20px);border-bottom:1px solid var(--line)}
+.logo{font-weight:900;letter-spacing:.04em}.logo span{color:var(--lime)}nav{display:flex;gap:24px;color:var(--muted);font-size:14px}
+main{max-width:1100px;margin:auto;padding:48px 20px 80px}.hero{padding:40px 0 55px;display:grid;grid-template-columns:1.2fr .8fr;gap:35px;align-items:center}
+.eyebrow{color:var(--lime);font-size:12px;font-weight:800;letter-spacing:.18em;text-transform:uppercase}
+h1{font-size:clamp(42px,7vw,76px);line-height:.98;letter-spacing:-.05em;margin:18px 0}h1 em{font-style:normal;color:var(--lime)}
+p{color:var(--muted);line-height:1.65}.hero p{max-width:550px;font-size:17px}
+.hero-card{border:1px solid var(--line);background:linear-gradient(145deg,#17231d,#101614);border-radius:24px;padding:28px;min-height:270px;display:flex;flex-direction:column;justify-content:space-between}
+.terminal{font-family:monospace;color:var(--lime);font-size:13px;line-height:1.8}.hero-card strong{font-size:30px;line-height:1.15;max-width:300px}
+.tag{display:inline-block;border:1px solid #50623d;border-radius:99px;padding:8px 12px;color:var(--lime);font-size:12px;width:max-content}
+.section{margin:25px 0 18px}.section h2{font-size:clamp(26px,4vw,40px);margin:10px 0}
+.form-shell{border:1px solid var(--line);background:var(--panel);border-radius:24px;padding:clamp(20px,4vw,38px);margin-top:25px}
+.form-top{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;margin-bottom:25px}.form-top h2{margin:8px 0;font-size:30px}.required{color:var(--muted);font-size:12px}
+form{display:grid;grid-template-columns:1fr 1fr;gap:20px}.field{display:flex;flex-direction:column;gap:9px}.wide{grid-column:1/-1}label,.label{font-weight:700;font-size:14px}input,select,textarea{width:100%;background:#0c1210;color:var(--text);border:1px solid #34433a;border-radius:12px;padding:14px;font:inherit;outline:none}input:focus,select:focus,textarea:focus{border-color:var(--lime);box-shadow:0 0 0 2px #c7f36b22}input::placeholder,textarea::placeholder{color:#718077}
+.checks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.check{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:10px;padding:11px;font-size:13px;color:#dce3da}.check input{width:16px;height:16px;accent-color:var(--lime);padding:0}
+.range-line{display:flex;align-items:center;gap:14px}.range-line input{accent-color:var(--lime);padding:0}.score{font-size:22px;font-weight:900;color:var(--lime);min-width:42px;text-align:center}.hint{font-size:12px;color:var(--muted)}
+button{border:0;background:var(--lime);color:#11180e;font-weight:900;padding:16px 22px;border-radius:12px;cursor:pointer;font-size:15px}button:hover{filter:brightness(1.05)}.submit-row{display:flex;justify-content:space-between;align-items:center;gap:18px}.note{font-size:12px;color:var(--muted);max-width:480px}
+.success{display:none;border:1px solid #50623d;background:#18241a;color:var(--lime);padding:16px;border-radius:12px;margin-top:16px}
+footer{border-top:1px solid var(--line);padding:25px max(5vw,20px);color:var(--muted);font-size:12px;display:flex;justify-content:space-between;gap:20px}
+@media(max-width:700px){nav{display:none}.hero{grid-template-columns:1fr;padding-top:22px}.hero-card{min-height:210px}form{grid-template-columns:1fr}.wide{grid-column:auto}.checks{grid-template-columns:repeat(2,minmax(0,1fr))}.form-top,.submit-row{flex-direction:column}.submit-row button{width:100%}footer{flex-direction:column}}
+.gate{position:fixed;inset:0;background:var(--bg);display:grid;place-items:center;z-index:10;padding:20px}
+.gate .card{max-width:440px;width:100%;border:1px solid var(--line);background:var(--panel);border-radius:24px;padding:30px;display:grid;gap:16px}
+.gate h2{font-size:30px;margin:6px 0 0}.gate p{margin:0;font-size:14px}.err{color:#ff6b6b;font-size:13px;min-height:16px}
+.who{display:flex;align-items:center;gap:10px}.ghost{background:transparent;border:1px solid var(--line);color:var(--text);padding:8px 12px;font-size:12px;border-radius:99px}
+.admin{display:none}.admin-top{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+.admin h2{font-size:clamp(28px,5vw,44px);margin:8px 0}.count{color:var(--lime);font-weight:900}
+.app-card{border:1px solid var(--line);background:var(--panel);border-radius:18px;padding:18px;margin-bottom:12px;display:grid;gap:8px}
+.app-card .row{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.app-card b{font-size:17px}
+.app-card .kv{font-size:13px;color:var(--muted);line-height:1.6}.app-card .kv span{color:var(--text)}
+.del{background:#2a1414;color:#ff9c9c;border:1px solid #5a2a2a;padding:7px 12px;font-size:12px;border-radius:10px}
+.modebox{font-size:12px;color:var(--muted);border:1px dashed var(--line);border-radius:12px;padding:10px 12px;margin-bottom:16px;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="gate" id="gate"><form class="card" id="gateForm">
+<div class="eyebrow">IT●КРУЖОК · РЕГИСТРАЦИЯ</div>
+<h2>Давай знакомиться</h2>
+<p>Напиши имя и выбери класс, чтобы продолжить.</p>
+<div class="field"><label for="regName">Имя *</label><input id="regName" maxlength="30" placeholder="Например, Азиз" required autocomplete="off"></div>
+<div class="field"><label for="regGrade">Класс *</label><select id="regGrade" required><option value="">Выбери класс</option><option>5 класс</option><option>6 класс</option><option>7 класс</option><option>8 класс</option><option>9 класс</option><option>10 класс</option><option>11 класс</option></select></div>
+<button type="submit">Продолжить ↗</button><div class="err" id="gateErr"></div>
+</form></div>
+<header><div class="logo">IT<span>●</span>КРУЖОК</div><nav><span>О кружке</span><span>Направления</span><span>Заявка</span></nav><div class="who"><span class="tag" id="tagTop">НАБОР · 5–11 КЛАССЫ</span><button class="ghost" id="logout" style="display:none">Сменить</button></div></header>
+<main id="userMain">
+<section class="hero">
+<div><div class="eyebrow">ТВОЙ СТАРТ В IT · 2026</div><h1>Создавай.<br><em>Кодируй.</em><br>Будь с будущим.</h1><p>Любишь технологии или только хочешь попробовать? Заполни анкету — расскажи о себе, своих знаниях и интересе к программированию.</p><span class="tag">Не обязательно быть экспертом ✳</span></div>
+<div class="hero-card"><div class="terminal">> welcome_to_it_club<br>> learn · build · create<br>> future_is_loading...</div><strong>Твоя идея может стать настоящим проектом.</strong><div class="tag">PYTHON / WEB / GAME DEV</div></div>
+</section>
+<section class="section"><div class="eyebrow">/ ПРИЁМ УЧАСТНИКОВ</div><h2>Расскажи о себе.</h2><p>Анкета поможет подобрать направление и уровень занятий.</p></section>
+<section class="form-shell">
+<div class="form-top"><div><div class="eyebrow">ЗАЯВКА УЧАСТНИКА ✳</div><h2>Вступить в IT-кружок</h2></div><div class="required">Поля со звёздочкой обязательны</div></div>
+<form id="application">
+<div class="field"><label for="first">Имя *</label><input id="first" name="first" placeholder="Например, Азиз" required></div>
+<div class="field"><label for="last">Фамилия *</label><input id="last" name="last" placeholder="Например, Каримов" required></div>
+<div class="field"><label for="grade">Класс *</label><select id="grade" name="grade" required><option value="">Выбери класс</option><option>5 класс</option><option>6 класс</option><option>7 класс</option><option>8 класс</option><option>9 класс</option><option>10 класс</option><option>11 класс</option></select></div>
+<div class="field"><label for="contact">Телефон *</label><input id="contact" name="contact" type="tel" placeholder="+998 ..." required></div>
+<div class="field wide"><label for="telegram">Telegram</label><input id="telegram" name="telegram" maxlength="40" placeholder="@username" autocomplete="off"></div>
+<div class="field wide"><span class="label">Какие языки программирования или технологии ты знаешь?</span><div class="checks">
+<label class="check"><input type="checkbox" name="languages" value="Scratch">Scratch</label>
+<label class="check"><input type="checkbox" name="languages" value="Python">Python</label>
+<label class="check"><input type="checkbox" name="languages" value="JavaScript">JavaScript</label>
+<label class="check"><input type="checkbox" name="languages" value="HTML/CSS">HTML / CSS</label>
+<label class="check"><input type="checkbox" name="languages" value="C++">C++</label>
+<label class="check"><input type="checkbox" name="languages" value="Java">Java</label>
+<label class="check"><input type="checkbox" name="languages" value="C#">C#</label>
+<label class="check"><input type="checkbox" name="languages" value="Другие">Другие</label>
+<label class="check"><input type="checkbox" name="languages" value="Пока не знаю">Пока не знаю</label>
+</div></div>
+<div class="field wide"><label for="other">Если выбрал «Другие», напиши какие</label><input id="other" name="other" placeholder="Название языка или технологии"></div>
+<div class="field wide"><label for="level">Как ты оцениваешь свои знания в IT? *</label><div class="range-line"><input id="level" name="level" type="range" min="1" max="10" value="3" required><span class="score" id="score">3/10</span></div><div class="hint">1 — только начинаю · 5 — знаю основы · 10 — уверенно создаю проекты</div></div>
+<div class="field wide"><label for="goal">Что ты хотел(а) бы научиться делать?</label><textarea id="goal" name="goal" rows="3" placeholder="Например: создавать сайты, игры, приложения или роботов..."></textarea></div>
+<div class="field wide"><label class="check"><input type="checkbox" id="consent" required> Я согласен(на) на использование этих данных для связи по поводу занятий. *</label></div>
+<div class="field wide submit-row"><div class="note">Твои данные видит только организатор кружка и используют только для связи по поводу занятий.</div><button type="submit">Отправить заявку ↗</button></div>
+</form><div class="success" id="success">Заявка заполнена! Спасибо за интерес к IT-кружку. ✳</div>
+</section>
+</main>
+<main class="admin" id="adminMain">
+<div class="admin-top"><div><div class="eyebrow">/ АДМИН-ПАНЕЛЬ</div><h2>Заявки участников · <span class="count" id="cnt">0</span></h2></div><button id="refresh" type="button">Обновить ↻</button></div>
+<div class="modebox" id="modebox"></div>
+<div id="adminList"></div>
+</main>
+<footer><span>IT●КРУЖОК · УЧИСЬ СОЗДАВАТЬ</span><span>© 2026 · От идеи к проекту</span></footer>
+<script>
+const ADMIN='CdDd',$=id=>document.getElementById(id);
+const esc=t=>String(t==null?'':t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let user=null,db=null,uid='local-'+Math.random().toString(36).slice(2,9),mem=[];
+const ready=(async()=>{try{if(!(window.claude&&claude.use))return;
+ const wait=p=>Promise.race([p,new Promise(r=>setTimeout(()=>r(null),4000))]);
+ db=await wait(claude.use('db'));const u=await wait(claude.use('user'));if(db&&u){uid=await u.id()}}catch(e){db=null}})();
+const lsGet=()=>{try{return JSON.parse(localStorage.getItem('itclub-apps')||'[]')}catch(e){return mem}};
+const lsSet=a=>{mem=a;try{localStorage.setItem('itclub-apps',JSON.stringify(a))}catch(e){}};
+async function saveApp(r){await ready;r.id=uid;if(db){await db.doc('applications/'+uid).set(r);return 'shared'}r.id=uid+'-'+Date.now();lsSet(lsGet().concat([r]));return 'local'}
+async function loadApps(){await ready;let a;if(db){const s=await db.collection('applications').get();a=s.docs.map(d=>d.data())}else a=lsGet();return a.sort((x,y)=>(y.createdAt||0)-(x.createdAt||0))}
+async function delApp(id){await ready;if(db)await db.doc('applications/'+id).delete();else lsSet(lsGet().filter(a=>a.id!==id))}
+
+function enter(){
+ $('gate').style.display='none';$('logout').style.display='';
+ if(user.name===ADMIN){$('userMain').style.display='none';$('adminMain').style.display='block';$('tagTop').textContent='АДМИН';renderAdmin()}
+ else{$('adminMain').style.display='none';$('userMain').style.display='';$('tagTop').textContent=user.name+' · '+user.grade;$('first').value=user.name;$('grade').value=user.grade}
+}
+$('gateForm').onsubmit=e=>{e.preventDefault();const n=$('regName').value.trim(),g=$('regGrade').value;
+ if(!n||!g){$('gateErr').textContent='Заполни имя и класс';return}
+ user={name:n,grade:g};try{localStorage.setItem('itclub-user',JSON.stringify(user))}catch(e){}enter()};
+$('logout').onclick=()=>{user=null;try{localStorage.removeItem('itclub-user')}catch(e){}
+ $('regName').value='';$('regGrade').value='';$('gate').style.display='grid';$('logout').style.display='none';$('success').style.display='none';$('tagTop').textContent='НАБОР · 5–11 КЛАССЫ'};
+try{const u=JSON.parse(localStorage.getItem('itclub-user')||'null');if(u&&u.name&&u.grade){user=u;enter()}}catch(e){}
+
+const range=$('level'),score=$('score');
+range.addEventListener('input',()=>score.textContent=range.value+'/10');
+$('application').addEventListener('submit',async e=>{e.preventDefault();
+ const f=e.target,r={first:f.first.value.trim(),last:f.last.value.trim(),grade:f.grade.value,contact:f.contact.value.trim(),telegram:(t=>t&&t[0]!=='@'?'@'+t:t)(f.telegram.value.trim()),
+  languages:[...f.querySelectorAll('[name=languages]:checked')].map(x=>x.value),other:f.other.value.trim(),level:+f.level.value,goal:f.goal.value.trim(),createdAt:Date.now()};
+ const ok=$('success');ok.style.display='block';ok.textContent='Отправляем…';
+ try{const m=await saveApp(r);ok.textContent=m==='shared'?'Заявка отправлена! Спасибо за интерес к IT-кружку. ✳':'Заявка сохранена на этом устройстве. Спасибо! ✳'}
+ catch(err){ok.textContent='Не удалось отправить заявку. Попробуй ещё раз позже.'}});
+
+async function renderAdmin(){
+ const box=$('adminList');box.innerHTML='<p>Загрузка…</p>';
+ await ready;$('modebox').textContent=db?'Режим: общая база. Здесь все заявки, отправленные через эту страницу.':'Режим: локальный. Видны только заявки, отправленные с этого устройства и браузера.';
+ let a=[];try{a=await loadApps()}catch(e){box.innerHTML='<p>Нет доступа к заявкам.</p>';return}
+ $('cnt').textContent=a.length;
+ if(!a.length){box.innerHTML='<p>Пока заявок нет.</p>';return}
+ box.innerHTML=a.map(x=>'<div class="app-card"><div class="row"><div><b>'+esc(x.first)+' '+esc(x.last)+'</b> <span class="tag">'+esc(x.grade)+'</span></div><button class="del" data-id="'+esc(x.id)+'">Удалить</button></div>'
+ +'<div class="kv">Телефон: <span>'+esc(x.contact)+'</span><br>Telegram: <span>'+esc(x.telegram||'—')+'</span><br>Знает: <span>'+esc((x.languages||[]).join(', ')||'—')+(x.other?' ('+esc(x.other)+')':'')+'</span><br>Уровень: <span>'+esc(x.level)+'/10</span><br>Хочет научиться: <span>'+esc(x.goal||'—')+'</span><br>Отправлено: <span>'+new Date(x.createdAt).toLocaleString('ru-RU')+'</span></div></div>').join('');
+}
+$('refresh').onclick=renderAdmin;
+$('adminList').onclick=async e=>{const b=e.target.closest('.del');if(!b||!confirm('Удалить эту заявку?'))return;try{await delApp(b.dataset.id)}catch(err){alert('Не удалось удалить')}renderAdmin()};
+</script>
+</body>
+</html>
